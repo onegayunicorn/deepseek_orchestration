@@ -1,0 +1,69 @@
+{
+  "model_path": "/path/to/your/deepseek-model.gguf",
+  "context_size": 2048,
+  "execution_mode": "prompt",
+  "timeout": 30,
+  "security": {
+    "whitelist": [
+      "ls",
+      "cat",
+      "echo",
+      "pwd",
+      "date",
+      "whoami",
+      "df",
+      "du",
+      "ps",
+      "top",
+      "grep",
+      "find",
+      "wc",
+      "head",
+      "tail"
+    ],
+    "blacklist": [
+      "rm -rf /",
+      "dd if=",
+      "> /dev/",
+      "chmod 777",
+      "curl | sh",
+      "wget | sh",
+      "mkfs"
+    ],
+    "require_approval_for": [
+      "docker",
+      "git",
+      "systemctl",
+      "service",
+      "apt",
+      "pkg",
+      "npm",
+      "pip",
+      "chmod",
+      "chown",
+      "kill",
+      "pkill"
+    ]
+  },
+  "audit_log": "deepseek_audit.db",
+  "voice": {
+    "enabled": true,
+    "require_approval_for_all": false,
+    "wake_word": "orchestrator",
+    "confirmation_phrase": "yes",
+    "rate_limit_seconds": 3
+  },
+  "file_watch": {
+    "enabled": true,
+    "watch_dir": "./triggers",
+    "file_pattern": "*.task",
+    "result_extension": ".result"
+  },
+  "web_api": {
+    "enabled": false,
+    "host": "0.0.0.0",
+    "port": 5000,
+    "require_auth": true,
+    "api_key": "your-secret-api-key-here"
+  }
+}

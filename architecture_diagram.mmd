@@ -1,0 +1,114 @@
+graph LR
+    subgraph "Android Device - Termux Environment"
+        subgraph "User Interface Layer"
+            UI1[Terminal CLI]
+            UI2[File System<br/>Trigger Files]
+            UI3[Web Browser<br/>Optional API]
+        end
+        
+        subgraph "DeepSeek Orchestrator"
+            subgraph "Core Components"
+                ORC1[Main Orchestrator]
+                ORC2[Configuration Manager]
+                ORC3[Event Router]
+            end
+            
+            subgraph "AI Inference"
+                AI1[DeepSeek Model<br/>GGUF Format]
+                AI2[llama.cpp<br/>Python Bindings]
+                AI3[Prompt Builder]
+                AI4[Response Parser]
+            end
+            
+            subgraph "Security & Validation"
+                SEC1[Command Validator]
+                SEC2[Whitelist Filter]
+                SEC3[Blacklist Filter]
+                SEC4[Approval Manager]
+                SEC5[Sanitization Engine]
+            end
+            
+            subgraph "Execution Engine"
+                EXE1[Command Executor]
+                EXE2[Process Manager]
+                EXE3[Output Capture]
+                EXE4[Timeout Controller]
+            end
+            
+            subgraph "Storage & Audit"
+                DB1[(SQLite<br/>Audit DB)]
+                DB2[Log Files]
+                DB3[State Store]
+            end
+        end
+        
+        subgraph "System Integration"
+            SYS1[Linux Shell<br/>bash/sh]
+            SYS2[File System]
+            SYS3[Process Space]
+            SYS4[Network Stack]
+        end
+    end
+    
+    %% User interactions
+    UI1 -->|Natural Language| ORC1
+    UI2 -->|File Events| ORC3
+    UI3 -->|HTTP Requests| ORC1
+    
+    %% Orchestrator flow
+    ORC1 --> ORC2
+    ORC2 --> ORC3
+    ORC3 --> AI3
+    
+    %% AI processing
+    AI3 --> AI2
+    AI2 --> AI1
+    AI1 --> AI2
+    AI2 --> AI4
+    AI4 --> SEC1
+    
+    %% Security validation
+    SEC1 --> SEC2
+    SEC1 --> SEC3
+    SEC2 --> SEC4
+    SEC3 --> SEC4
+    SEC4 --> SEC5
+    SEC5 --> EXE1
+    
+    %% Execution
+    EXE1 --> EXE2
+    EXE2 --> SYS1
+    SYS1 --> SYS3
+    EXE2 --> EXE3
+    EXE3 --> EXE4
+    
+    %% Results and logging
+    EXE4 --> DB1
+    EXE4 --> DB2
+    EXE4 --> UI1
+    EXE4 --> UI2
+    
+    %% System access
+    EXE2 --> SYS2
+    EXE2 --> SYS4
+    
+    %% State management
+    ORC1 --> DB3
+    DB3 --> ORC1
+    
+    %% Styling
+    classDef uiClass fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    classDef coreClass fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    classDef aiClass fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    classDef secClass fill:#f8bbd0,stroke:#c2185b,stroke-width:2px
+    classDef execClass fill:#d1c4e9,stroke:#512da8,stroke-width:2px
+    classDef dbClass fill:#ffccbc,stroke:#d84315,stroke-width:2px
+    classDef sysClass fill:#b0bec5,stroke:#455a64,stroke-width:2px
+    
+    class UI1,UI2,UI3 uiClass
+    class ORC1,ORC2,ORC3 coreClass
+    class AI1,AI2,AI3,AI4 aiClass
+    class SEC1,SEC2,SEC3,SEC4,SEC5 secClass
+    class EXE1,EXE2,EXE3,EXE4 execClass
+    class DB1,DB2,DB3 dbClass
+    class SYS1,SYS2,SYS3,SYS4 sysClass

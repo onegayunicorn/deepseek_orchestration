@@ -1,0 +1,107 @@
+graph TB
+    subgraph "Event Sources"
+        A1[CLI Input]
+        A2[Trigger File<br/>.task/.flag]
+        A3[Web API<br/>Optional]
+        A4[Scheduled Task<br/>Cron]
+    end
+    
+    subgraph "Orchestrator Core"
+        B1[Event Handler]
+        B2[Request Parser]
+        B3[DeepSeek Inference Engine]
+        B4[Response Parser]
+        B5[Command Extractor]
+    end
+    
+    subgraph "Security Layer"
+        C1[Command Validator]
+        C2{Whitelist<br/>Check}
+        C3{Blacklist<br/>Check}
+        C4{Approval<br/>Required?}
+        C5[User Approval<br/>Prompt]
+    end
+    
+    subgraph "Execution Layer"
+        D1{Execution<br/>Mode?}
+        D2[Auto-Approve<br/>Execute]
+        D3[Prompt Mode<br/>Execute]
+        D4[Dry Run<br/>Simulate]
+        D5[Audit Only<br/>Log]
+        D6[Command Executor]
+    end
+    
+    subgraph "Storage & Logging"
+        E1[Audit Database<br/>SQLite]
+        E2[Execution Logs]
+        E3[Result Files]
+    end
+    
+    subgraph "Feedback Loop"
+        F1[Result Collector]
+        F2[User Notification]
+        F3[Context Update]
+    end
+    
+    %% Event flow
+    A1 --> B1
+    A2 --> B1
+    A3 --> B1
+    A4 --> B1
+    
+    %% Processing flow
+    B1 --> B2
+    B2 --> B3
+    B3 --> B4
+    B4 --> B5
+    
+    %% Security validation
+    B5 --> C1
+    C1 --> C2
+    C2 -->|Pass| C3
+    C2 -->|Fail| E1
+    C3 -->|Pass| C4
+    C3 -->|Fail| E1
+    
+    %% Approval flow
+    C4 -->|Yes| C5
+    C4 -->|No| D1
+    C5 -->|Approved| D1
+    C5 -->|Rejected| E1
+    
+    %% Execution modes
+    D1 -->|Auto| D2
+    D1 -->|Prompt| D3
+    D1 -->|Dry Run| D4
+    D1 -->|Audit| D5
+    
+    D2 --> D6
+    D3 --> D6
+    D4 --> E1
+    D5 --> E1
+    
+    %% Execution and results
+    D6 --> F1
+    F1 --> E1
+    F1 --> E2
+    F1 --> E3
+    F1 --> F2
+    F1 --> F3
+    
+    %% Feedback to DeepSeek (optional)
+    F3 -.->|Context| B3
+    
+    %% Styling
+    classDef eventClass fill:#e1f5ff,stroke:#01579b,stroke-width:2px
+    classDef coreClass fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef securityClass fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef execClass fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    classDef storageClass fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    classDef feedbackClass fill:#e0f2f1,stroke:#004d40,stroke-width:2px
+    
+    class A1,A2,A3,A4 eventClass
+    class B1,B2,B3,B4,B5 coreClass
+    class C1,C2,C3,C4,C5 securityClass
+    class D1,D2,D3,D4,D5,D6 execClass
+    class E1,E2,E3 storageClass
+    class F1,F2,F3 feedbackClass

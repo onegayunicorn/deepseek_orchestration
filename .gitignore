@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Orchestrator specific
+deepseek_audit.db
+deepseek_audit.db-journal
+deepseek_orchestrator.log
+triggers/*.task
+triggers/*.result
+triggers/
+
+# Model files (too large for git)
+*.gguf
+*.bin
+*.safetensors
+models/
+
+# Temporary files
+*.wav
+*.mp3
+*.tmp
+voice_temp.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+secrets.json
+api_keys.txt
