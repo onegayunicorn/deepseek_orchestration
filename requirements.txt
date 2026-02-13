@@ -1,0 +1,18 @@
+# DeepSeek Orchestrator - Python Dependencies
+
+# Core dependencies
+watchdog>=3.0.0
+
+# Web API dependencies
+flask>=2.3.0
+flask-limiter>=3.3.0
+requests>=2.31.0
+
+# Optional: For real model inference
+# llama-cpp-python>=0.2.0
+
+# Database
+# sqlite3 is included in Python standard library
+
+# Utilities
+jinja2>=3.1.2
