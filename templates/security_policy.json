@@ -1,0 +1,23 @@
+{
+  "firewall": {
+    "enabled": true,
+    "allowed_ips": ["127.0.0.1"],
+    "blocked_countries": [],
+    "max_connections_per_ip": 10
+  },
+  "encryption": {
+    "audit_logs": "AES-256",
+    "config_secrets": "GPG"
+  },
+  "sandboxing": {
+    "use_chroot": false,
+    "max_memory_mb": 512,
+    "max_cpu_percent": 50,
+    "restricted_paths": ["/etc", "/var/log", "/root"]
+  },
+  "authentication": {
+    "mfa_enabled": false,
+    "session_timeout_minutes": 60,
+    "max_login_attempts": 5
+  }
+}
