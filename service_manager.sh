@@ -142,6 +142,35 @@ send_command() {
     echo -e "${GREEN}✓ Command sent to window $window${NC}"
 }
 
+# Self-healing watchdog mode
+watchdog_mode() {
+    echo -e "${CYAN}Starting Self-Healing Watchdog...${NC}"
+    echo "Interval: 60s"
+    
+    while true; do
+        if ! session_exists; then
+            echo -e "${RED}[$(date)] Session died! Restarting...${NC}"
+            start_services
+        else
+            # Check individual windows
+            WINDOWS=$(tmux list-windows -t "$SESSION_NAME" -F "#W" 2>/dev/null)
+            for SERVICE in orchestrator webapi voice monitor logs; do
+                if [[ ! "$WINDOWS" =~ "$SERVICE" ]]; then
+                    echo -e "${YELLOW}[$(date)] Service $SERVICE missing! Restoring...${NC}"
+                    case $SERVICE in
+                        orchestrator) tmux new-window -t "$SESSION_NAME" -n orchestrator "cd '$SCRIPT_DIR' && $PYTHON_CMD deepseek_orchestrator.py --mode watch" ;;
+                        webapi) tmux new-window -t "$SESSION_NAME" -n webapi "cd '$SCRIPT_DIR' && $PYTHON_CMD web_api.py" ;;
+                        voice) tmux new-window -t "$SESSION_NAME" -n voice "cd '$SCRIPT_DIR' && bash voice_listener.sh" ;;
+                        monitor) tmux new-window -t "$SESSION_NAME" -n monitor "cd '$SCRIPT_DIR' && $PYTHON_CMD monitor.py --watch" ;;
+                        logs) tmux new-window -t "$SESSION_NAME" -n logs "cd '$SCRIPT_DIR' && tail -f deepseek_orchestrator.log" ;;
+                    esac
+                fi
+            done
+        fi
+        sleep 60
+    done
+}
+
 # Health check
 health_check() {
     echo -e "${CYAN}Running health check...${NC}"
@@ -203,6 +232,7 @@ ${YELLOW}Commands:${NC}
   windows     List all windows
   send        Send command to window
   health      Run health check
+  watchdog    Start self-healing watchdog
   help        Show this help
 
 ${YELLOW}Examples:${NC}
@@ -262,6 +292,9 @@ main() {
             ;;
         health)
             health_check
+            ;;
+        watchdog)
+            watchdog_mode
             ;;
         help|--help|-h)
             show_help

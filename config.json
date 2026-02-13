@@ -1,48 +1,26 @@
 {
-  "model_path": "/path/to/your/deepseek-model.gguf",
+  "version": "1.0.0-production",
+  "model": {
+    "type": "mock",
+    "path": null,
+    "fallback": {
+      "type": "mock",
+      "path": null
+    }
+  },
   "context_size": 2048,
+  "temperature": 0.7,
   "execution_mode": "prompt",
   "timeout": 30,
   "security": {
     "whitelist": [
-      "ls",
-      "cat",
-      "echo",
-      "pwd",
-      "date",
-      "whoami",
-      "df",
-      "du",
-      "ps",
-      "top",
-      "grep",
-      "find",
-      "wc",
-      "head",
-      "tail"
+      "ls", "cat", "echo", "pwd", "date", "whoami", "df", "du", "ps", "top", "grep", "find", "wc", "head", "tail"
     ],
     "blacklist": [
-      "rm -rf /",
-      "dd if=",
-      "> /dev/",
-      "chmod 777",
-      "curl | sh",
-      "wget | sh",
-      "mkfs"
+      "rm -rf /", "dd if=", "> /dev/", "chmod 777", "curl | sh", "wget | sh", "mkfs"
     ],
     "require_approval_for": [
-      "docker",
-      "git",
-      "systemctl",
-      "service",
-      "apt",
-      "pkg",
-      "npm",
-      "pip",
-      "chmod",
-      "chown",
-      "kill",
-      "pkill"
+      "docker", "git", "systemctl", "service", "apt", "pkg", "npm", "pip", "chmod", "chown", "kill", "pkill"
     ]
   },
   "audit_log": "deepseek_audit.db",
@@ -60,10 +38,11 @@
     "result_extension": ".result"
   },
   "web_api": {
-    "enabled": false,
+    "enabled": true,
     "host": "0.0.0.0",
     "port": 5000,
     "require_auth": true,
     "api_key": "your-secret-api-key-here"
-  }
+  },
+  "mesh_port": 8080
 }
