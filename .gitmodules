@@ -1,0 +1,3 @@
+[submodule "internal/quantum-forge"]
+	path = internal/quantum-forge
+	url = https://github.com/onegayunicorn/quantum-forge.git
